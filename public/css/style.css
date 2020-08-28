@@ -1,0 +1,98 @@
+html{
+    padding: 0;
+    margin: 0;
+    position: relative;
+    min-height: 100vh; 
+}
+/*Gnerales*/
+
+.oculto{
+    display: none;
+}
+.mostrado{
+    display: flex;
+}
+
+/*NavBar*/
+.nav-options{
+    background-color: #212121;
+}
+
+
+/*Content*/
+.end-content{
+    margin-bottom: 4rem;
+}
+
+/*Compra de producto*/
+
+#btn-compra-producto{
+    border: 1px solid transparent;
+    border-radius: 0.4rem;
+    background-color: #00BFA5;
+}
+
+/*Panel de usuario*/
+/*Panel de usuario - opciones del panel*/
+div.opciones-panel > div{
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid black;
+    padding: 5%;
+}
+/*Panel de usuario - vender producto*/
+.vender-producto{
+    background-color: #F5F5F5;
+    border-radius: 0.4rem;
+    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.form-style div{
+    margin: 1rem auto;
+}
+#btn-vender{
+    border: 1px solid transparent;
+    border-radius: 0.4rem;
+    background-color: #00BFA5;
+}
+
+/*Panel de usuario - Compras realizadas*/
+.tabla-compras{
+    background-color: #F5F5F5;
+    border-radius: 0.4rem;
+    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+.tabla-compras table tr, .tabla-compras table tr th, .tabla-compras table tr td{
+    border: 1px solid black;
+}
+.cuadro-paginacion{
+    background-color: #E0E0E0;
+    border-radius: 0.4rem;
+    height: 2%;
+    cursor: pointer;
+}
+/*Panel de usuario  - Cambiar contrasenia*/
+
+.container-cambio-contrasenia{
+    background-color: #F5F5F5;
+    border-radius: 0.4rem;
+    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+#btn-cambio-contrasenia{
+    border: 1px solid transparent;
+    border-radius: 0.4rem;
+    background-color: #00BFA5;
+}
+
+/*Eliminar cuenta*/
+.container-eliminar-cuenta{
+    background-color: #F5F5F5;
+    border-radius: 0.4rem;
+    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+footer{
+    background-color: #ECEFF1;
+    position: absolute;
+    bottom: 0;
+    margin-top: 50%;
+}
