@@ -21,7 +21,7 @@ html{
 
 /*Content*/
 .end-content{
-    margin-bottom: 4rem;
+    margin-bottom: 4.5rem;
 }
 
 /*Compra de producto*/
@@ -33,26 +33,45 @@ html{
 }
 
 /*Panel de usuario*/
+.contain-form-style{
+    background-color: #ECEFF1;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.4rem;
+}
 /*Panel de usuario - opciones del panel*/
+.opciones-panel{
+    background-color: #0D47A1;
+    height: 100vh;
+}
+
 div.opciones-panel > div{
     margin-bottom: 0.5rem;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
     padding: 5%;
 }
+div.opciones-panel > div:hover{
+    background-color: rgba(19, 92, 200, 0.449);
+    
+}
 /*Panel de usuario - vender producto*/
+
+
 .vender-producto{
-    background-color: #F5F5F5;
+    
+    /* #F5F5F5 */
+    background-color: #ECEFF1;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.4rem;
-    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    /* box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2); */
 }
 
 .form-style div{
     margin: 1rem auto;
 }
 #btn-vender{
-    border: 1px solid transparent;
+    /* border: 1px solid transparent;
     border-radius: 0.4rem;
-    background-color: #00BFA5;
+    background-color: #00BFA5; */
 }
 
 /*Panel de usuario - Compras realizadas*/
@@ -78,9 +97,9 @@ div.opciones-panel > div{
     box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
 #btn-cambio-contrasenia{
-    border: 1px solid transparent;
+    /* border: 1px solid transparent;
     border-radius: 0.4rem;
-    background-color: #00BFA5;
+    background-color: #00BFA5; */
 }
 
 /*Eliminar cuenta*/

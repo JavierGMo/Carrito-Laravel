@@ -18,8 +18,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('description');
             $table->string('ref_img');
-            $table->float('number_of_pieces');
-            $table->integer('price');
+            $table->integer('number_of_pieces');
+            $table->float('price');
             $table->timestamps();
         });
     }

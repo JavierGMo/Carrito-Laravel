@@ -2,8 +2,14 @@
 
 @section('title', 'Inicio')
 
+@section('actionspanel')
+    
+    <script src="{{ asset('js/home.js') }}"></script>
+    
+@endsection
+
 @section('content')
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div id="carouselExampleControls" class="carousel slide mt-4" data-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
                 <img src="{{ asset('images/cancha.png') }}" class="d-block w-100" alt="add-1">
@@ -25,11 +31,10 @@
         </a>
     </div><!--ads-->
 
-
     <div class="mt-3 p-1 d-flex flex-column end-content">
         <div><p class="h3 my-3 text-center">Productos numero uno</p></div>
-        <div class="d-flex my-3">
-            <div class="card mx-3" style="width: 18rem;">
+        <div id="productos-categoria-uno" class="d-flex my-3">
+            {{-- <div class="card mx-3" style="width: 18rem;">
                 <img src="{{ asset('images/producto.jpg') }}" class="card-img-top" alt="Producto temp">
                 <div class="card-body">
                     <h5 class="card-title">Nombre del producto</h5>
@@ -64,11 +69,11 @@
                     <p class="card-text text-truncate">Precio: $10000</p>
                     <a href="#" class="btn btn-primary">Comprar</a>
                 </div>
-            </div>
+            </div> --}}
         </div><!--Tira de productos uno-->
 
         <div><p class="h3 my-3 text-center">Productos numero dos</p></div>
-        <div class="d-flex my-3">
+        <div id="productos-categoria-2" class="d-flex my-3">
             <div class="card mx-3" style="width: 18rem;">
                 <img src="{{ asset('images/producto.jpg') }}" class="card-img-top" alt="Producto temp">
                 <div class="card-body">
@@ -107,5 +112,6 @@
             </div>
         </div><!--Tira de productos uno-->
     </div><!--productos-->
+    {{-- <img src="{{ Storage::url('public/products/07_9_2020_45_24_239_Gato cholo.jpg') }}" alt=""> --}}
 
 @endsection

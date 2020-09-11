@@ -3,17 +3,23 @@
 @section('title', 'Nombre de usuario')
 
 @section('actionspanel')
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
+
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
+    
     <script src="{{ asset('js/userpanel.js') }}"></script>
 @endsection
 
 @section('content')
-    <div class="d-flex end-content">
-        <div class="opciones-panel p-2 w-25">
-            <div><a id="mueve-perfil" href="#">Perfil</a></div>
-            <div><a id="mueve-vender" href="#">Vender</a></div>
-            <div><a id="mueve-compras" href="#">Compras</a></div>
-            <div><a id="mueve-cambiar-contra" href="#">Cambiar contraseña</a></div>
-            <div><a id="mueve-eiliminar" href="#" class="text-danger">Eliminar cuenta</a></div>
+    <div class="d-flex end-content h-100 w-100">
+        
+        <div class="opciones-panel mr-2 p-2 w-25">
+            <div><a id="mueve-perfil" href="#" class="text-decoration-none" ><i class="fa fa-user-circle"></i> Perfil</a></div>
+            <div><a id="mueve-vender" href="#" class="text-decoration-none" ><i class="fa fa-tag"></i> Vender producto</a></div>
+            <div><a id="mueve-compras" href="#" class="text-decoration-none" ><i class="fa fa-shopping-bag"></i> Compras</a></div>
+            <div><a id="mueve-cambiar-contra" href="#" class="text-decoration-none" ><i class="fa fa-lock"></i> Cambiar contraseña</a></div>
+            <div><a id="mueve-eiliminar" href="#" class="text-decoration-none text-danger"><i class="fa fa-user-times"></i> Eliminar cuenta</a></div>
         </div><!--Aside menu-->
         <div class="d-flex flex-column w-75 end-content">
             <div id="conte-perfil" class="">
@@ -27,12 +33,12 @@
                     <div class="d-flex flex-column w-50 p-3">
                         <div>
                             <div>
-                                <p>Nombre(s): <span id="nombre-usuario">Nombre completo</span> </p>
+                                <p>Nombre(s): <span id="nombre-usuario">{{ $name }}</span> </p>
                             </div>
                         </div><!--Nombre-->
                         <div>
                             <div>
-                                <p>Apellido(s): <span id="apellido-usuario">Apellido(s)</span></p>
+                                <p>Apellido(s): <span id="apellido-usuario">{{ $last_name }}</span></p>
                             </div>
                         </div><!--Apellidos-->
                         <div>
@@ -42,7 +48,7 @@
                         </div><!--Direccion-->
                         <div>
                             <div>
-                                <p>Fecha de creacion: <span id="fecha-creacion-usuario">dd/mm/yyyy</span></p>
+                                <p>Fecha de creacion: <span id="fecha-creacion-usuario">{{ $created_at }}</span></p>
                             </div>
                         </div><!--Fecha de creacion cuenta-->
                     </div><!--Informacion del usuario-->
@@ -54,31 +60,27 @@
                 <div>
                     <p class="h3 text-center">Vender</p>
                 </div><!--Titulo vender-->
-                <div class="vender-producto container w-75 p-3">
+                <div class="contain-form-style container w-75 p-3">
                     <form class="form-style">
                         <input type="text" id="token_producto" value="{{ csrf_token() }}" hidden>
                         <div>
-                            <label for="">Imagen del producto:</label>
-                            <input  id="img_producto" type="file">
+                            <label for="img_producto">Imagen del producto</label>
+                            <input  id="img_producto" type="file" required>
                         </div>
                         <div>
-                            <label for="">Nombre del producto:</label>
-                            <input id="nombre_producto" type="text">
+                            <input id="nombre_producto" type="text" placeholder="Nombre" required>
                         </div>
                         <div>
-                            <label for="">Descripcion del producto:</label>
-                            <textarea id="descripcion_producto" cols="15" rows="5"></textarea>
+                            <textarea id="descripcion_producto" cols="15" rows="5" placeholder="Descripcion" required></textarea>
                         </div>
                         <div>
-                            <label for="">Numero de piezas:</label>
-                            <input id="numero_piezas_producto" type="number">
+                            <input id="numero_piezas_producto" type="number" placeholder="Numero de piezas" required>
                         </div>
                         <div>
-                            <label for="">Precio por unidad:</label>
-                            <input id="precio_unidad_producto" type="number">
+                            <input id="precio_unidad_producto" type="number" placeholder="Precio por unidad" required>
                         </div>
                         <div class="d-flex justify-content-center">
-                            <button id="btn-vender" class="py-3 w-50">VENDER</button>
+                            <button id="btn-vender" class="btn btn-success py-3 w-50">VENDER</button>
                         </div>
                     </form>
                 </div><!--Form para vender-->
@@ -130,18 +132,18 @@
                 <div>
                     <p class="h3 text-center">Cambiar contraseña</p>
                 </div><!--Titulo cambiar contrasenia-->
-                <div class="container container-cambio-contrasenia w-50 p-3">
+                <div class="container contain-form-style w-50 p-3">
                     <form action="" class="m-4">
+                        <input type="text" id="token_cambio_p" value="{{ csrf_token() }}" hidden>
+                        <input type="text" id="id_user_c_p" value="{{ $id }}" hidden>
                         <div class="my-3">
-                            <label for="">Nueva contraseña</label>
-                            <input type="password" id="nueva-contrasenia">
+                            <input type="password" id="nueva-contrasenia" placeholder="Nueva contraseña" required>
                         </div>
                         <div class="my-3">
-                            <label for="">Confirmar nueva contraseña</label>
-                            <input type="password" id="confirmar-nueva-contrasenia">
+                            <input type="password" id="confirmar-nueva-contrasenia" placeholder="Confirmar contraseña" required>
                         </div>
                         <div class="d-flex justify-content-center mt-4">
-                            <button id="btn-cambio-contrasenia" class="py-2 w-75">CAMBIAR CONTRASEÑA</button>
+                            <button id="btn-cambio-contrasenia" class="btn btn-success py-2 w-75">CAMBIAR CONTRASEÑA</button>
                         </div>
                     </form>
                 </div><!--Form para cambiar contraseña-->
@@ -156,11 +158,14 @@
                     <div class="d-flex justify-content-center m-4">
                         <button id="btn-pre-eliminar" class="btn btn-danger">Eliminar cuenta</button>
                     </div><!--Boton de precaucion-->
-                    <div id="form-eliminar-cuenta" class="container container-eliminar-cuenta p-3 w-50 oculto">
+                    <div id="form-eliminar-cuenta" class="container contain-form-style p-3 w-50 oculto">
                         <form action="" class="m-4">
+
+                            <input type="text" id="id_delete" value="{{ $id }}" hidden>
+                            <input type="text" id="token_delete" value="{{ csrf_token() }}" hidden>
+
                             <div>
-                                <label for="">Escriba su contraseña</label>
-                                <input type="password" id="contrasenia-para-borrar">
+                                <input type="password" id="contrasenia_para_borrar" placeholder="Contraseña actual" required>
                             </div>
                             <div class="d-flex justify-content-center mt-4">
                                 <button id="btn-eliminar-cuenta" class="btn btn-danger py-2 w-50">Eliminar</button>
