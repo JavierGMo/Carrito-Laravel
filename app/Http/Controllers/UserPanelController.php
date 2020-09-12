@@ -37,6 +37,7 @@ class UserPanelController extends Controller
             'id'=>$user->id,
             'name'=>$user->name,
             'last_name'=>$user->last_name,
+            'ref_img'=>'public/'.$user->ref_img,
             'created_at'=>$user->created_at
         ]);
     }

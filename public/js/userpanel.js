@@ -1,3 +1,4 @@
+
 const sendData = async function(URL, data, method, headers){
     const resp = await fetch(URL, {
         headers : headers,
@@ -29,6 +30,7 @@ document.addEventListener('DOMContentLoaded', function(){
     let bntCambioCont = document.getElementById('btn-cambio-contrasenia');
     /* Eliminar cuenta */
     let btnPreEliminar = document.getElementById('btn-pre-eliminar');
+    let mostrarBorraCuenta = false;
     
     /* Mostrar el form para eliminar */
     let btnEliminar = document.getElementById('btn-eliminar-cuenta');
@@ -57,6 +59,8 @@ document.addEventListener('DOMContentLoaded', function(){
         if(confirmarMostrarForm){
             formEliminarCuenta.classList.add('oculto');
             confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
+            console.log(mostrarBorraCuenta);
         }
 
     });
@@ -68,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(confirmarMostrarForm){
             formEliminarCuenta.classList.add('oculto');
             confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
         }
     });
     moverACompras.addEventListener('click', function(e){
@@ -78,6 +83,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(confirmarMostrarForm){
             formEliminarCuenta.classList.add('oculto');
             confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
         }
     });
     moverACambiarContra.addEventListener('click', function(e){
@@ -85,6 +91,11 @@ document.addEventListener('DOMContentLoaded', function(){
         auxVisible.classList.add('oculto');
         contenedores['cambio-contra'].classList.remove('oculto');
         auxVisible = contenedores['cambio-contra'];
+        if(confirmarMostrarForm){
+            formEliminarCuenta.classList.add('oculto');
+            confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
+        }
     });
     moverAEliminar.addEventListener('click', function(e){
         e.preventDefault();
@@ -94,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function(){
         if(confirmarMostrarForm){
             formEliminarCuenta.classList.add('oculto');
             confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
         }
     });
 
@@ -106,8 +118,20 @@ document.addEventListener('DOMContentLoaded', function(){
         const descripcionProducto = document.getElementById('descripcion_producto');
         const numeroPiezas = document.getElementById('numero_piezas_producto');
         const precioUnidad = document.getElementById('precio_unidad_producto');
+        if(
+            imgProducto.files[0] === undefined && nombreProducto.value.trim() === '' && 
+            descripcionProducto.value.trim()=== '' && numeroPiezas.value.trim() === ''
+        ){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Hace falta llenar los campos'
+            });
+            return;
+        }
+
         const data =  new FormData()
-        console.log(imgProducto);
+        // console.log(imgProducto);
         data.append('ref_img', imgProducto.files[0]);
         data.append('name', nombreProducto.value);
         data.append('description', descripcionProducto.value);
@@ -119,15 +143,27 @@ document.addEventListener('DOMContentLoaded', function(){
             // res.status
             // console.log('Data: ' +  data + ' status' + res.status);
             if(res.status === 200){
-                alert('Exito, se guardo tu producto');
+                // alert('Exito, se guardo tu producto');
                 // console.log(`Response text: ${data}`);
-                imgProducto.value = '';
-                nombreProducto.value = '';
-                descripcionProducto.value = '';
-                numeroPiezas.value = '';
-                precioUnidad.value = '';
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Listo',
+                    text: 'Agrego su producto',
+                    timer: 1750,
+                    onClose: () => {
+                        imgProducto.value = '';
+                        nombreProducto.value = '';
+                        descripcionProducto.value = '';
+                        numeroPiezas.value = '';
+                        precioUnidad.value = '';
+                    }});
+                
             }else if(res.status === 400){
-                alert('VAya, deberias checar tus campos, faltan algunos');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Algo salio mal, intente de nuevo.'
+                });
             }
         })
         .catch(function(e){
@@ -144,38 +180,91 @@ document.addEventListener('DOMContentLoaded', function(){
         const nuevaContrasenia = document.getElementById('nueva-contrasenia');
         const confirmarNuevaContra = document.getElementById('confirmar-nueva-contrasenia');
         
+        if(nuevaContrasenia.value.trim()==='' && confirmarNuevaContra.value.trim() === ''){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Llene los campos :)'
+            });
+            return;
+        }
+
+
         if(nuevaContrasenia.value === confirmarNuevaContra.value){
             const data = new URLSearchParams();
             data.append('password', nuevaContrasenia.value);
-        
-            sendData(`http://127.0.0.1:8000/userpanel/${id.value}`, data, 'PUT',{
-                'X-CSRF-TOKEN' : token.value,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            })
-            .then(async function(res){
-                const data = await res.text();
-                if(res.status === 200){
-                    console.log(data);
-                    alert('Se cambio correctamente');
-                    nuevaContrasenia.value = '';
-                    confirmarNuevaContra.value = '';
-                }else if(res.status === 400){
-                    alert('Vaya, intenta de nuevo');
+            Swal.fire({
+                title: '¿Continuar?',
+                text: "Su contraseña se cambiara",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, continuar',
+                cancelButtonText:'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    sendData(`http://127.0.0.1:8000/userpanel/${id.value}`, data, 'PUT',{
+                        'X-CSRF-TOKEN' : token.value,
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    })
+                    .then(async function(res){
+                        const data = await res.text();
+                        if(res.status === 200){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Listo',
+                                text: 'Cambio de contraseña con exito',
+                                timer: 2000
+                            });
+                        }else if(res.status === 400){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal, intente de nuevo'
+                            });
+                        }
+                    })
+                    .catch(function(e){
+                        console.error(e);
+                    });
                 }
-            })
-            .catch(function(e){
-                console.error(e);
             });
+            
         }else{
-            alert('Vaya, confirma las contraseñas');
+            Swal.fire({
+                icon: 'warning',
+                title: 'Oops...',
+                text: 'Verifique que sean iguales'
+            });
         }
+        nuevaContrasenia.value = '';
+        confirmarNuevaContra.value = '';
     });
 
     btnPreEliminar.addEventListener('click', function(e){
         e.preventDefault();
-        formEliminarCuenta.classList.remove('oculto');
-        console.log('Pre');
-        confirmarMostrarForm = true;
+        if(mostrarBorraCuenta){
+            return;
+        }
+        Swal.fire({
+            title: '¿Continuar?',
+            text: "Si continua tiene que verificar con su contraseña",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, continuar',
+            cancelButtonText:'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                formEliminarCuenta.classList.remove('oculto');
+                // console.log('Pre');
+                confirmarMostrarForm = true;
+                mostrarBorraCuenta = true;
+            }
+        });
+        
 
     });
 
@@ -184,30 +273,65 @@ document.addEventListener('DOMContentLoaded', function(){
         const id = document.getElementById('id_delete');
         const token = document.getElementById('token_delete');
         const contrasenia = document.getElementById('contrasenia_para_borrar');
+
+        if(contrasenia.value.trim() === ''){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Llene los campos'
+            });
+            return;
+        }
+
         const data = new URLSearchParams();
         data.append('password', contrasenia.value);
-        console.log(contrasenia.value);
-
-        sendData(`http://127.0.0.1:8000/userpanel/${id.value}`,
-                data,
-                'DELETE',
-                {
-                    'X-CSRF-TOKEN' : token.value,
-                    // 'Content-Type' : 'application/x-www-form-urlencoded'
-        })
-        .then(async function(res){
-            const data = await res.text();
-            console.log(`Data: ${data}`);
-            if(res.status === 200){
-                alert('Cuenta borrada');
-                window.location.href = 'http://127.0.0.1:8000';
-            }else if(res.status === 400){
-                alert('Vaya, verifica tu campo');
+        Swal.fire({
+            title: '¿Continuar?',
+            text: "Su cuenta se borrara permanentemente",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, borrar',
+            cancelButtonText:'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                    sendData(`http://127.0.0.1:8000/userpanel/${id.value}`,
+                    data,
+                    'DELETE',
+                    {
+                        'X-CSRF-TOKEN' : token.value,
+                        // 'Content-Type' : 'application/x-www-form-urlencoded'
+                    })
+                    .then(async function(res){
+                        const data = await res.text();
+                        console.log(`Data: ${data}`);
+                        if(res.status === 200){
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Listo',
+                                text: 'Cuenta borrada',
+                                timer: 1750,
+                                onClose: function(){
+                                    window.location.href = 'http://127.0.0.1:8000';
+                                }
+                            });
+                            
+                        }else if(res.status === 400){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Algo salio mal, intente de nuevo'
+                            });
+                        }
+                    })
+                    .catch(function(e){
+                        console.error(`Error: ${e}`);
+                    });
             }
-        })
-        .catch(function(e){
-            console.error(`Error: ${e}`);
         });
+
+        
     });
 
     //Traer todos los productos que se compraron

@@ -28,7 +28,7 @@
                 </div><!--Titulo seccion-->
                 <div class="d-flex w-75">
                     <div class="w-50 h-50">
-                        <img src="{{ asset('images/producto.jpg') }}" class="w-100 h-100 rounded" alt="Image profile">
+                        <img src="{{ Storage::url($ref_img) }}" class="w-100 h-100 rounded" alt="Image profile">
                     </div><!--Imagen de perfil-->
                     <div class="d-flex flex-column w-50 p-3">
                         <div>
@@ -41,11 +41,11 @@
                                 <p>Apellido(s): <span id="apellido-usuario">{{ $last_name }}</span></p>
                             </div>
                         </div><!--Apellidos-->
-                        <div>
+                        {{-- <div>
                             <div>
                                 <p>Direccion: <span id="direccion-usuario">Calle de calle Num 7 num ext 8</span></p>
                             </div>
-                        </div><!--Direccion-->
+                        </div><!--Direccion--> --}}
                         <div>
                             <div>
                                 <p>Fecha de creacion: <span id="fecha-creacion-usuario">{{ $created_at }}</span></p>
