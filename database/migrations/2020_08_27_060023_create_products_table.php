@@ -20,7 +20,13 @@ class CreateProductsTable extends Migration
             $table->string('ref_img');
             $table->integer('number_of_pieces');
             $table->float('price');
+
+            $table->unsignedBigInteger('user_id');
+
             $table->timestamps();
+        });
+        Schema::table('products', function (Blueprint $table){
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
