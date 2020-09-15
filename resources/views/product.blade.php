@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
-@section('title', 'Producto | Desc-Prod')
+
+@section('title')
+    <title>Producto</title>
+@endsection
 
 @section('content')
     <div class="container">

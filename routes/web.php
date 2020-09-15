@@ -34,3 +34,4 @@ Route::delete('userpanel/{id}', 'UserPanelController@destroy');
 
 //Rutas de compras
 Route::post('buy', 'BuyController@store')->name('buy');
+Route::get('buy', 'BuyController@index');

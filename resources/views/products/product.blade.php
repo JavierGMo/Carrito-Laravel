@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Producto | Desc-Prod')
+@section('title')
+    <title>{{ $data->name }} | Producto</title>
+@endsection
 
 
 @section('actionspanel')

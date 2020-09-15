@@ -1,6 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Registro')
+@section('title')
+    <title>Registro</title>
+@endsection
 
 @section('content')
 <div class="mt-3 container end-content">

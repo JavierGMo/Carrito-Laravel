@@ -12,6 +12,55 @@ html{
 .mostrado{
     display: flex;
 }
+.card-person{
+    display: flex;
+    /* height: 0%; */
+    flex-direction: column;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+}
+.card-person-img{
+    /* width: 100%; */
+    width: 223.438px;
+    height: 50%;
+}
+
+/*Home page*/
+.slider{
+    width: 94%;
+    margin: 0 auto;
+    position: relative;
+}
+
+.arrows >div i{
+    font-size: 4rem;
+}
+.arrow-left, .arrow-right{
+    position: absolute;
+    top: 10rem;
+    /* width: 3.5rem;
+    height: 4.5rem; */
+    /* border-radius: 100%; */
+    text-align: center;
+    /* background-color: rgba(19, 92, 200, 0.449); */
+    cursor: pointer;
+}
+.arrow-left{
+    right: 98.7%;
+}
+.arrow-right{
+    left: 99%;
+}
+
+#productos-categoria-uno{
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+}
+#productos-categoria-uno::-webkit-scrollbar{
+    display: none;
+}
+
 
 /*NavBar*/
 .nav-options{
@@ -75,6 +124,10 @@ div.opciones-panel > div:hover{
 }
 
 /*Panel de usuario - Compras realizadas*/
+
+#searchBox{
+    border: none;
+}
 .tabla-compras{
     background-color: #F5F5F5;
     border-radius: 0.4rem;

@@ -26,6 +26,8 @@ document.addEventListener('DOMContentLoaded', function(){
     let moverAEliminar = document.getElementById('mueve-eiliminar');
     /* Vender */
     let btnVender = document.getElementById('btn-vender');
+    /* Compras */
+    let comprasTable = document.getElementById('compras-table');
     /* Cambiar contraseña */
     let bntCambioCont = document.getElementById('btn-cambio-contrasenia');
     /* Eliminar cuenta */
@@ -335,7 +337,43 @@ document.addEventListener('DOMContentLoaded', function(){
     });
 
     //Traer todos los productos que se compraron
-
+    setTimeout(function(){
+        receiveData('http://127.0.0.1:8000/buy', new FormData().append('data', null))
+        .then(async function(res){
+            const respuesta = await res.json();
+            const data = respuesta['data'];
+            
+            let options = {
+                numberPerPage:5,
+                goBar:false, 
+                pageCounter:false,
+            };
+        
+            let filterOptions = {
+                el:'#searchBox'
+            };
+            console.log(data);
+            for (const key in data) {
+                const template = `
+                    <tr>
+                        <td>${parseInt(key)+1}</td>
+                        <td>${data[key]['name']}</td>
+                        <td>${data[key]['number_of_pieces']}</td>
+                        <td>$${data[key]['price']}</td>
+                    </tr>
+                `;
+                comprasTable.innerHTML += template;
+            }
+            
+            
+        
+            paginate.init('.tablacompras', options, filterOptions);
+            
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    }, 3000);
 
 });
 

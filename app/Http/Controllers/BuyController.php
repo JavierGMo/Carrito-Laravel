@@ -21,7 +21,32 @@ class BuyController extends Controller
      */
     public function index()
     {
-        //
+        if(!Auth::check()){
+            return response()->json([
+                'status' => 'error',
+                'data' => 'no sesion'
+            ], 401);
+        }
+
+        $purchases = DB::table('purchases')
+                        ->where('purchases.user_id', Auth::id())
+                        ->join('products', 'purchases.product_id', '=', 'products.id')
+                        ->select('purchases.number_of_pieces', 'purchases.price', 'products.name')
+                        ->get();
+        // $purchases = DB::table('purchases')
+        //                 ->where('purchases.user_id', Auth::id())
+        //                 ->select('purchases.number_of_pieces', 'purchases.price')
+        //                 ->get();
+
+        return response()->json([
+            'status' => 'ok',
+            'data' => $purchases
+        ], 200);
+
+
+        
+
+          
     }
 
     /**

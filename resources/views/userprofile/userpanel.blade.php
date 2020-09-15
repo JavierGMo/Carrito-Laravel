@@ -1,14 +1,14 @@
 @extends('layouts.app')
 
-@section('title', 'Nombre de usuario')
+@section('title')
+    <title>{{ $name }} | Panel</title>
+@endsection
 
 @section('actionspanel')
+    <link rel="stylesheet" href="{{ asset('css/paginate.css') }}">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.css">
-
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.js"></script>
-    
     <script src="{{ asset('js/userpanel.js') }}"></script>
+    <script src="{{ asset('js/paginate.min.js') }}"></script>
 @endsection
 
 @section('content')
@@ -92,14 +92,25 @@
                 </div><!--Titulo compras-->
                 <div class="d-flex flex-column">
                     <div class="container tabla-compras w-50 p-4">
-                        <table>
-                            <tr>
-                                <th>ID</th>
-                                <th>Producto</th>
-                                <th>Numero de piezas</th>
-                                <th>Total</th>
-                            </tr>
-                            <tr>
+                        <div class="panel my-3">
+                            <div class="body">
+                                <div class="input-group">
+                                    <label for="searchBox">Filtrar: </label>
+                                    <input type="search" id="searchBox" class="mx-1" placeholder="Filtrar...">
+                                </div>
+                            </div>
+                        </div>
+                        <table id="compras-table" class="tablacompras table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Numero de piezas</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            
+                            {{-- <tr>
                                 <td>1</td>
                                 <td>Casa de campaña</td>
                                 <td>1</td>
@@ -116,15 +127,15 @@
                                 <td>Auto Mustang</td>
                                 <td>1</td>
                                 <td>$1000</td>
-                            </tr>
+                            </tr> --}}
                         </table>
                     </div><!--contenedor de tabla-->
-                    <div class="d-flex justify-content-center">
+                    {{-- <div class="d-flex justify-content-center">
                         <div class="m-2 p-2 cuadro-paginacion">1</div>
                         <div class="m-2 p-2 cuadro-paginacion">2</div>
                         <div class="m-2 p-2 cuadro-paginacion">...</div>
                         <div class="m-2 p-2 cuadro-paginacion">n</div>
-                    </div><!--Bnts paginacion-->
+                    </div><!--Bnts paginacion--> --}}
                 </div><!--Comrpas realizadas-->
             </div><!--Productos comprados-->
             

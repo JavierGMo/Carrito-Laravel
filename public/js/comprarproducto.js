@@ -20,65 +20,75 @@ document.addEventListener('DOMContentLoaded', function(){
         const precio = document.getElementById('precio').value;
 
         const data = new URLSearchParams();
+        
 
-
-        if(cantidadPiezas.value !== '' && !isNaN(cantidadPiezas.value)){
-            
-            data.append('cantidad', cantidadPiezas.value);
-            data.append('total', (parseFloat(precio)*parseInt(cantidadPiezas.value)));
-            data.append('idProducto', idProducto.value);
-
-
-            sendData(`http://127.0.0.1:8000/buy`, data, 'POST',{
-                'X-CSRF-TOKEN' : token.value
-            })
-            .then(async function(res){
-                const data = await res.text();
-                if(res.status === 200){
-                    Swal.fire(
-                        '!Exito¡',
-                        'Producto comprado',
-                        'success'
-                    );
-                    cantidadPiezas = '';
-                }else if(res.status === 400){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Verifique sus campos'
-                    });
-                }else if(res.status === 401){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Sesion',
-                        text: 'Inicie sesion'
-                    });
-                }else if(res.status === 500){
-                    console.log(`Error: ${data}`);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Intente mas tarde, algo salio mal'
-                    });
-                }
-                cantidadPiezas.value = '';
-            })
-            .catch(function(e){
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Algo salio mal, intenta de nuevo'
-                });
-            });
-        }else{
+        if(cantidadPiezas.value === ''){
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: 'No deje los campos vacios'
             });
+            return;   
+        }else{
+            Swal.fire({
+                title: '¿Comprar?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#28a745',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Si, comprar',
+                cancelButtonText:'Cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    data.append('cantidad', cantidadPiezas.value);
+                    data.append('total', (parseFloat(precio)*parseInt(cantidadPiezas.value)));
+                    data.append('idProducto', idProducto.value);
+            
+            
+                    sendData(`http://127.0.0.1:8000/buy`, data, 'POST',{
+                        'X-CSRF-TOKEN' : token.value
+                    })
+                    .then(async function(res){
+                        const data = await res.text();
+                        if(res.status === 200){
+                            Swal.fire(
+                                '!Exito¡',
+                                'Producto comprado',
+                                'success'
+                            );
+                            cantidadPiezas = '';
+                        }else if(res.status === 400){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Verifique sus campos'
+                            });
+                        }else if(res.status === 401){
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Sesion',
+                                text: 'Inicie sesion'
+                            });
+                        }else if(res.status === 500){
+                            console.log(`Error: ${data}`);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Intente mas tarde, algo salio mal'
+                            });
+                        }
+                        cantidadPiezas.value = '';
+                    })
+                    .catch(function(e){
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Algo salio mal, intenta de nuevo'
+                        });
+                    });
+                }
+            });
         }
-        
-        
     });
 
 });
