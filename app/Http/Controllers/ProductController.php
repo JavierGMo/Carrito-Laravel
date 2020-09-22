@@ -6,6 +6,7 @@ use App\Product;
 // use Dotenv\Validator;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -32,16 +33,7 @@ class ProductController extends Controller
      */
     public function create(array $data)
     {
-        //Hacer una consulta a la base de datos para guardar el producto
-        echo json_encode($data);
-        // return Product::create([
-        //     'name'=>$data['name'],
-        //     'description'=>$data['description'],
-        //     'ref_img'=>'not-image-product.jpg',
-        //     'number_of_pieces'=>$data['number_of_pieces'],
-        //     'price'=>$data['price'],
 
-        // ]);
     }
 
     /**
@@ -52,6 +44,12 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
+        if(!Auth::check()){
+            return response()->json([
+                'status' => 'error',
+                'data' => 'no-sesion'
+            ], 401);
+        }
         $routeImage = '';
         $itIsValid =  Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
@@ -80,6 +78,7 @@ class ProductController extends Controller
             'ref_img' => $routeImage,
             'number_of_pieces' => $request->number_of_pieces,
             'price' => $request->price,
+            'user_id' => Auth::id()
         ]);
 
 

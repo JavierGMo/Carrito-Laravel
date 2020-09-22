@@ -67,12 +67,20 @@ class BuyController extends Controller
      */
     public function store(Request $request)
     {
+        $statusCode = 400;
+        $status = 'err';
+        $data = [
+            'error' => 'no-create',
+            'error' => 'no-stock'
+        ];
+        
         if(!Auth::check()){
             return response()->json([
                 'status' => 'error',
                 'data' => 'no sesion'
             ], 401);
         }
+
         $itIsValidate = Validator::make($request->all(), [
             'cantidad' => ['required', 'integer'],
             'total' => ['required', 'integer'],
@@ -85,19 +93,35 @@ class BuyController extends Controller
             ], 400);
         }
 
-        $product = DB::table('purchases')->insert([
+        $purchase = DB::table('purchases')->insert([
             'number_of_pieces' => $request->cantidad,
             'price' => $request->total,
             'product_id' => $request->idProducto,
             'user_id' => Auth::id()
 
         ]);
+        $product = DB::table('products')
+                        ->where([
+                            ['id', '=', $request->idProducto],
+                            ['number_of_pieces', '<>', 0],
+                            ['number_of_pieces', '>', $request->cantidad]
+                        ])
+                        ->decrement('number_of_pieces', $request->cantidad);
         
+        
+        if($purchase && $product){
+            $statusCode = 200;
+            $status = 'ok';
+            $data = [
+                'success' => 'crete-product',
+                'success' => 'stock'
+            ];
+        }
 
         return response()->json([
-            'status'=>'ok',
-            'data'=>$request->all()
-        ],200);
+            'status' => $status,
+            'data' => $data
+        ],$statusCode);
     }
 
     /**

@@ -20,9 +20,14 @@ html{
     border: 1px solid rgba(0, 0, 0, 0.125);
     border-radius: 0.25rem;
 }
+.truncate{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .card-person-img{
-    /* width: 100%; */
-    width: 223.438px;
+    width: 100%;
+    /* width: 223.438px; */
     height: 50%;
 }
 
@@ -82,6 +87,11 @@ html{
 }
 
 /*Panel de usuario*/
+.cont-tables-styles{
+    background-color: #ECEFF1;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 0.4rem;
+}
 .contain-form-style{
     background-color: #ECEFF1;
     border: 1px solid rgba(0, 0, 0, 0.2);
@@ -125,13 +135,14 @@ div.opciones-panel > div:hover{
 
 /*Panel de usuario - Compras realizadas*/
 
-#searchBox{
+#searchBox, #searchSold{
     border: none;
 }
 .tabla-compras{
     background-color: #F5F5F5;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.4rem;
-    box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2);
+    /* box-shadow: -2px 2px 2px 1px rgba(0, 0, 0, 0.2); */
 }
 .tabla-compras table tr, .tabla-compras table tr th, .tabla-compras table tr td{
     border: 1px solid black;
@@ -141,6 +152,17 @@ div.opciones-panel > div:hover{
     border-radius: 0.4rem;
     height: 2%;
     cursor: pointer;
+}
+/*Tabla de productos vendidos*/
+td{
+    padding: 0px 1px;
+}
+.icons-sold{
+    font-size: 30px;
+    margin: 0 10px;
+}
+.field-descriptions{
+    width: 125px;
 }
 /*Panel de usuario  - Cambiar contrasenia*/
 

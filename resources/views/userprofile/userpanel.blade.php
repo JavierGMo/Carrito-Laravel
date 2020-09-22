@@ -17,6 +17,7 @@
         <div class="opciones-panel mr-2 p-2 w-25">
             <div><a id="mueve-perfil" href="#" class="text-decoration-none" ><i class="fa fa-user-circle"></i> Perfil</a></div>
             <div><a id="mueve-vender" href="#" class="text-decoration-none" ><i class="fa fa-tag"></i> Vender producto</a></div>
+            <div><a id="mueve-vendidos" href="#" class="text-decoration-none" ><i class="fa fa-tag"></i> Productos vendidos</a></div>
             <div><a id="mueve-compras" href="#" class="text-decoration-none" ><i class="fa fa-shopping-bag"></i> Compras</a></div>
             <div><a id="mueve-cambiar-contra" href="#" class="text-decoration-none" ><i class="fa fa-lock"></i> Cambiar contraseña</a></div>
             <div><a id="mueve-eiliminar" href="#" class="text-decoration-none text-danger"><i class="fa fa-user-times"></i> Eliminar cuenta</a></div>
@@ -86,6 +87,47 @@
                 </div><!--Form para vender-->
             </div><!--Vender producto-->
 
+            <div id="conte-vendidos" class="oculto">
+                <div>
+                    <p class="h3 text-center">Productos vendidos</p>
+                </div><!--Titulo vendidos-->
+                <div class="d-flex flex-column">
+                    <div class="container tabla-compras w-50 p-4">
+                        <div class="panel my-3">
+                            <div class="body">
+                                <div class="input-group">
+                                    <label for="searchBox">Filtrar: </label>
+                                    <input type="search" id="searchSold" class="mx-1" placeholder="Buscar...">
+                                </div>
+                            </div>
+                        </div>
+                        <table id="sold-table" class="tablesold">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Producto</th>
+                                    <th>Descripcion</th>
+                                    <th>Numero de piezas</th>
+                                    <th>Costo por unidad</th>
+                                    <th>Editar</th>
+                                    <th>Borrar</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div><!--contenedor de tabla-->
+                    <div class="m-1 container">
+                        <form class="m-1 container">
+                            <p>Injection form</p>
+                            <input type="text" id="token-update-products" value="{{ csrf_token() }}" hidden>
+                            <div id="form-injection">
+
+                            </div>
+                            <button id="update-product" class="btn btn-success">Actualizar</button>
+                        </form><!--Form para actualizar-->    
+                    </div>
+                </div><!--Comrpas realizadas-->
+            </div><!--Productos vendidos-->
+
             <div id="conte-compras" class="oculto">
                 <div>
                     <p class="h3 text-center">Compras</p>
@@ -109,33 +151,8 @@
                                     <th>Total</th>
                                 </tr>
                             </thead>
-                            
-                            {{-- <tr>
-                                <td>1</td>
-                                <td>Casa de campaña</td>
-                                <td>1</td>
-                                <td>$1000</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Mochila</td>
-                                <td>1</td>
-                                <td>$1000</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Auto Mustang</td>
-                                <td>1</td>
-                                <td>$1000</td>
-                            </tr> --}}
                         </table>
                     </div><!--contenedor de tabla-->
-                    {{-- <div class="d-flex justify-content-center">
-                        <div class="m-2 p-2 cuadro-paginacion">1</div>
-                        <div class="m-2 p-2 cuadro-paginacion">2</div>
-                        <div class="m-2 p-2 cuadro-paginacion">...</div>
-                        <div class="m-2 p-2 cuadro-paginacion">n</div>
-                    </div><!--Bnts paginacion--> --}}
                 </div><!--Comrpas realizadas-->
             </div><!--Productos comprados-->
             

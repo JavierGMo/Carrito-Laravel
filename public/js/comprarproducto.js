@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
         const token = document.getElementById('token');
         const idProducto = document.getElementById('id_producto');
+        const totalPiezas = document.getElementById('total_piezas');
         const precio = document.getElementById('precio').value;
 
         const data = new URLSearchParams();
@@ -28,7 +29,21 @@ document.addEventListener('DOMContentLoaded', function(){
                 title: 'Oops...',
                 text: 'No deje los campos vacios'
             });
-            return;   
+            return;  
+        }else if(parseInt(totalPiezas.value) === 0){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Vaya, ya no quedan piezas :/'
+            });
+            return;
+        }else if(parseInt(totalPiezas.value)<parseInt(cantidadPiezas.value)){
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'No hay tantas piezas, lo sentimos :/'
+            });
+            return;
         }else{
             Swal.fire({
                 title: '¿Comprar?',
@@ -43,6 +58,7 @@ document.addEventListener('DOMContentLoaded', function(){
                     data.append('cantidad', cantidadPiezas.value);
                     data.append('total', (parseFloat(precio)*parseInt(cantidadPiezas.value)));
                     data.append('idProducto', idProducto.value);
+                    // console.log(parseInt(totalPiezas.value)-parseInt(cantidadPiezas.value));
             
             
                     sendData(`http://127.0.0.1:8000/buy`, data, 'POST',{
@@ -51,17 +67,20 @@ document.addEventListener('DOMContentLoaded', function(){
                     .then(async function(res){
                         const data = await res.text();
                         if(res.status === 200){
-                            Swal.fire(
-                                '!Exito¡',
-                                'Producto comprado',
-                                'success'
+                            Swal.fire({
+                                title : '!Exito¡',
+                                text : 'Producto comprado',
+                                icon : 'success',
+                                onClose: () => {
+                                    location.reload()
+                                }}
                             );
                             cantidadPiezas = '';
                         }else if(res.status === 400){
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Oops...',
-                                text: 'Verifique sus campos'
+                                text: 'Vaya, parece que ya no hay stock'
                             });
                         }else if(res.status === 401){
                             Swal.fire({

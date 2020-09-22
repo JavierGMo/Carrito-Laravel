@@ -36,18 +36,24 @@
         <div class="d-flex flex-column w-25">
             <div>
                 <p>Precio: <span id="precio-producto">${{ $data->price }}</span></p>
+                @if ($data->number_of_pieces === 0)
+                    <p>Stock: <span>No hay mas en stock :/</span></p>
+                @else
+                    <p>Stock: <span>{{ $data->number_of_pieces }} piezas</span></p>
+                @endif
             </div><!--Precio del producto-->
             <div class="my-3">
                 <form action="">
 
                     <input type="text" id="token" value="{{ csrf_token() }}" hidden>
                     <input type="text" id="id_producto" value="{{ $data->id }}" hidden>
-                    <input type="text" id="precio" value="{{ $data->price }}" hidden>
+                    <input type="text" id="total_piezas" value="{{ $data->number_of_pieces }}" hidden >
+                    <input type="text" id="precio" value="{{ $data->price }}" hidden >
                     <div class="my-3">
                         <label for="">Cantidad:</label>
-                        <input type="number" id="cantidad-piezas">
+                        <input type="number" id="cantidad-piezas" @if ($data->number_of_pieces === 0) disabled @endif>
                     </div>
-                    <button id="btn-compra-producto" class="w-100 py-3">COMPRAR</button>
+                    <button id="btn-compra-producto" class="w-100 py-3" @if ($data->number_of_pieces === 0) disabled @endif >COMPRAR</button>
                 </form>
             </div><!--Cantidad de piezas y compra de producto-->
         </div><!--Aside de compra-->

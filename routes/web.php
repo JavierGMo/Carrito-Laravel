@@ -26,6 +26,11 @@ Route::get('product', 'ProductController@index')->name('producto');
 Route::get('product/{id}', 'ProductController@show')->name('producto');
 Route::post('product', 'ProductController@store')->name('producto');
 
+//Rutas productos vendidos
+
+Route::get('soldproducts', 'SoldProductsController@index');
+Route::get('soldproducts/{id}', 'SoldProductsController@show');
+Route::delete('soldproducts/{id}', 'SoldProductsController@destroy');
 
 //Rutas para panel de usuario
 Route::get('userpanel', 'UserPanelController@index')->name('user');
@@ -35,3 +40,4 @@ Route::delete('userpanel/{id}', 'UserPanelController@destroy');
 //Rutas de compras
 Route::post('buy', 'BuyController@store')->name('buy');
 Route::get('buy', 'BuyController@index');
+

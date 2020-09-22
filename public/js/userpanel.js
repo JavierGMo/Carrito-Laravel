@@ -17,32 +17,88 @@ const receiveData = async function(URL, data){
     const result = resp;
     return result;
 }
+function editProduct(este, id){
+    // console.log(este);
+    console.log(`ID : ${id}`);
+    const formInjection = document.getElementById('form-injection');
+    // console.log(formInjection);
+    let template = '';
+    receiveData(`http://127.0.0.1:8000/soldproducts/${id}`, null).then(async function(res){
+        const respuesta = await res.json();
+        const data = respuesta['data'];
+        console.log(data);
+        template = `
+            <p>${data[0]['id']}</p>
+            
+            <input id="name-update" value="${data[0]['name']}" >
+            <textarea id="description-update" >
+                ${data[0]['description']}
+            </textarea>
+            <input id="number-of-pieces-update" value="${data[0]['number_of_pieces']}">
+            <input id="price-update" value="${data[0]['price']}">
+        `;
+        formInjection.innerHTML = template;
+
+    }).catch(e=>console.error(e));
+
+    //Con esto remplazo lo que hay en el container para el form
+    //Solo debo de dar los mismos id para los input e injectar en el form los inputs
+}
+function deleteProduct(este, id){
+    const token = document.getElementById('token-update-products');
+    sendData(`http://127.0.0.1:8000/soldproducts/${id}`, null, 'DELETE', {
+        'X-CSRF-TOKEN' : token.value,
+    }).then(async function(res){
+        const respuesta = await res.json();
+        const data = respuesta['data'];
+
+        if(res.status === 200 && data === 1){
+            Swal.fire({
+                icon: 'success',
+                title: 'Borrado',
+                text: 'Producto borrado'
+            });
+        }
+
+    }).catch(e=>console.error(e));
+}
 
 document.addEventListener('DOMContentLoaded', function(){
     let moverAPerfil = document.getElementById('mueve-perfil');
     let moverAVender = document.getElementById('mueve-vender');
+    let moverAVendidos = document.getElementById('mueve-vendidos');
     let moverACompras = document.getElementById('mueve-compras');
     let moverACambiarContra = document.getElementById('mueve-cambiar-contra');
     let moverAEliminar = document.getElementById('mueve-eiliminar');
     /* Vender */
     let btnVender = document.getElementById('btn-vender');
-    /* Compras */
+    /* Compras-Tabla */
     let comprasTable = document.getElementById('compras-table');
+    /* Ventas-Tabla */
+    let vendidosTabla = document.getElementById('sold-table');
+    let btnUpdateProduct = document.getElementById('update-product');
     /* Cambiar contraseña */
     let bntCambioCont = document.getElementById('btn-cambio-contrasenia');
     /* Eliminar cuenta */
     let btnPreEliminar = document.getElementById('btn-pre-eliminar');
     let mostrarBorraCuenta = false;
     
+
+
     /* Mostrar el form para eliminar */
     let btnEliminar = document.getElementById('btn-eliminar-cuenta');
     /* Contenedor para eliminar la cuenta */
     let formEliminarCuenta = document.getElementById('form-eliminar-cuenta');
     let confirmarMostrarForm = false;
 
+
+
+
+
     const contenedores = {
         'perfil' : document.getElementById('conte-perfil'),
         'vender' : document.getElementById('conte-vender'),
+        'vendidos' : document.getElementById('conte-vendidos'),
         'compras' : document.getElementById('conte-compras'),
         'cambio-contra' : document.getElementById('conte-cambio-contra'),
         'eliminar' : document.getElementById('conte-eliminar'),
@@ -71,6 +127,17 @@ document.addEventListener('DOMContentLoaded', function(){
         auxVisible.classList.add('oculto');
         contenedores['vender'].classList.remove('oculto');
         auxVisible = contenedores['vender'];
+        if(confirmarMostrarForm){
+            formEliminarCuenta.classList.add('oculto');
+            confirmarMostrarForm = false;
+            mostrarBorraCuenta = false;
+        }
+    });
+    moverAVendidos.addEventListener('click', function(e){
+        e.preventDefault();
+        auxVisible.classList.add('oculto');
+        contenedores['vendidos'].classList.remove('oculto');
+        auxVisible = contenedores['vendidos'];
         if(confirmarMostrarForm){
             formEliminarCuenta.classList.add('oculto');
             confirmarMostrarForm = false;
@@ -335,7 +402,49 @@ document.addEventListener('DOMContentLoaded', function(){
 
         
     });
+   
+   
+   btnUpdateProduct.addEventListener('click', function(e){
+       e.preventDefault();
 
+   });
+    //Productos vendidos
+    setTimeout(function(){
+        receiveData('http://127.0.0.1:8000/soldproducts',null)
+        .then(async function(res){
+            const respuesta = await res.json();
+            const data = respuesta['data'];
+            // console.log(data);
+            const options = {
+                numberPerPage : 5,
+                goBar : false,
+                pageCounter : true
+            };
+            const filterOptions = {
+                el : '#searchSold'
+            };
+            for (const key in data) {
+                const template = `
+                    <tr>
+                        <td>${parseInt(key)+1}</td>
+                        <td>${data[key]['name']}</td>
+                        <td><p class="field-descriptions truncate">${data[key]['description']}</p></td>
+                        <td>${data[key]['number_of_pieces']}</td>
+                        <td>$${data[key]['price']}</td>
+                        <td><a class="icons-sold" href="javascript:void(0);" onclick="editProduct(this, ${data[key]['id']})"><span class="s-incos-sold"><i class="fa fa-edit"></i></a></span></td>
+                        <td><a class="icons-sold" href="javascript:void(0);" onclick="deleteProduct(this, ${data[key]['id']})"><span class="s-incos-sold"><i class="fa fa-trash"></i></a></span></td>
+                    </tr>
+                `;
+                vendidosTabla.innerHTML += template;
+            }
+
+            paginate.init('.tablesold', options, filterOptions);
+            
+        })
+        .catch(function(err){
+            console.log(err);
+        });
+    }, 2000);
     //Traer todos los productos que se compraron
     setTimeout(function(){
         receiveData('http://127.0.0.1:8000/buy', new FormData().append('data', null))
@@ -352,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function(){
             let filterOptions = {
                 el:'#searchBox'
             };
-            console.log(data);
+            // console.log(data);
             for (const key in data) {
                 const template = `
                     <tr>
@@ -374,6 +483,7 @@ document.addEventListener('DOMContentLoaded', function(){
             console.log(err);
         });
     }, 3000);
+    
 
 });
 
